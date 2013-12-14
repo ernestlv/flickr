@@ -1,0 +1,132 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<style>
+		body {
+			font-family: "Lucida Grande", Helvetica, Arial, sans-serif;
+			font-size: 62.5%;
+			margin: 0;
+		}
+		p {
+			font-size: 1.3em;
+		}
+		h1 {
+			margin: 1em;
+		}
+		.intro {
+			margin: 0 1.5em;
+		}
+		.photo {
+			padding: 5em;
+			color: #fff;
+			background-color: #000;
+			text-align: center;
+		}
+		.nav {
+			position: relative;		
+		}
+		.nav a {
+			display: none;
+			position: absolute;
+			top: 2em;
+			font-size: 5rem;
+			color: #fff;
+			text-decoration: none;
+		}
+		.prev {
+			left: 0;
+		}
+		.next {
+			right: 0;
+		}
+	</style>
+</head>
+<body>
+	<header>
+		<h1>My First Flickr Photoset</h1>
+	</header>
+	<section>
+		<div  class='intro'>
+			<p>This is my public photo album (<i>powered by flickr</i>). I like to share pretty cool stuff! <strong>please visit periodically</strong></p>
+			<p>Browse as you please. I hope you enjoy it watching it as much as I did doing it the!</p>
+			<p><i>Simul Stamus Divisum Declinamus</i></p>
+		</div>
+	</section>
+	<section>
+		<div class="nav">
+			<a class="prev" href="#">&lt;</a>
+			<a class="next" href="#">&gt;</a>
+		</div>
+		<div class="photo"></div>
+	</section>
+	<script>
+		(function(dom, global){
+			var set, photos, figure, title, caption, img, index, prev, next;
+
+			function insertPhoto (){
+				var photo = photos[index];
+				title.innerHTML = photo.title;
+				caption.innerHTML = set.ownername;
+				img.src = photo.url_m;
+			}
+
+			function prevPhoto(){
+				//e.preventDefault();
+				index--;
+				if (index > 0){
+					prev.style.display = 'block';
+				}else{
+					prev.style.display = 'none';
+				}
+				next.style.display = 'block';
+				insertPhoto();
+				return false;
+			}
+
+			function nextPhoto(){
+				//e.preventDefault();
+				index++;
+				if (index > 0){
+					prev.style.display = 'block';
+				}
+				if (index < photos.length-1){ 
+					next.style.display = 'block';
+				}else{
+					next.style.display = 'none';
+				}
+				insertPhoto();
+				return false;
+			}
+
+			global.jsonFlickrApi = function(json){
+				index = -1;
+				set = json.photoset;
+				photos = json.photoset.photo;
+				figure = dom.createElement('figure');
+				title = dom.createElement('h2');
+				img = dom.createElement('img');
+				caption = dom.createElement('figcaption');
+				figure.appendChild(title);
+				figure.appendChild(img);
+				figure.appendChild(caption);
+				dom.querySelector('.photo').appendChild(figure);
+
+				prev = dom.querySelector('.prev');
+				next = dom.querySelector('.next');
+
+				prev.addEventListener('click', prevPhoto);
+				next.addEventListener('click', nextPhoto);
+
+				nextPhoto();
+			};
+
+			//loads flicker photoset
+			var script = dom.createElement('script');
+			script.src = "http://api.flickr.com/services/rest/?method=flickr.photosets.getPhotos&api_key=42f553b3f28e7b25c9b556d63ca86755&photoset_id=72157638617133565&extras=+license%2C+date_upload%2C+date_taken%2C+owner_name%2C+icon_server%2C+original_format%2C+last_update%2C+geo%2C+tags%2C+machine_tags%2C+o_dims%2C+views%2C+media%2C+path_alias%2C+url_sq%2C+url_t%2C+url_s%2C+url_m%2C+url_o&format=json";
+			dom.head.appendChild(script);
+
+		})(document, window);
+	</script>	
+</body>
+</html>
+
