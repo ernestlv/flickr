@@ -1,6 +1,7 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
+	<title>My First Flickr Photo Album</title>
 	<style>
 		body {
 			font-family: "Lucida Grande", Helvetica, Arial, sans-serif;
@@ -66,7 +67,7 @@
 			function insertPhoto (){
 				var photo = photos[index];
 				title.innerHTML = photo.title;
-				caption.innerHTML = "credit:&nbsp;" + set.ownername;
+				caption.innerHTML = set.ownername;
 				img.src = photo.url_m;
 			}
 
@@ -123,6 +124,7 @@
 			//loads flicker photoset
 			var script = dom.createElement('script');
 			script.src = "http://api.flickr.com/services/rest/?method=flickr.photosets.getPhotos&api_key=e3d577010e5979a2ad2a22714abd901e&photoset_id=72157638617133565&extras=license%2C+date_upload%2C+date_taken%2C+owner_name%2C+icon_server%2C+original_format%2C+last_update%2C+geo%2C+tags%2C+machine_tags%2C+o_dims%2C+views%2C+media%2C+path_alias%2C+url_sq%2C+url_t%2C+url_s%2C+url_m%2C+url_o&format=json";
+			 
 			dom.head.appendChild(script);
 
 		})(document, window);
